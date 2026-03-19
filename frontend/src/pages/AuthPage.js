@@ -54,7 +54,7 @@ export default function AuthPage() {
           fontSize: '22px', fontWeight: 800, letterSpacing: '-0.5px',
           background: 'linear-gradient(90deg, #38bdf8, #818cf8)',
           WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-        }}>EduBot</div>
+        }}>EomoAdaptBot</div>
         <div style={{ color: '#5a6a88', fontSize: '13px', marginTop: '4px' }}>
           Emotion-Aware AI Tutor
         </div>
@@ -84,7 +84,7 @@ export default function AuthPage() {
       <div style={{ position: 'relative', zIndex: 1 }}>
         {mode === 'signin' ? (
           <SignIn
-            afterSignInUrl="/chat"
+            afterSignInUrl="/"
             routing="hash"
             appearance={{
               variables: {
@@ -106,7 +106,7 @@ export default function AuthPage() {
           />
         ) : (
           <SignUp
-            afterSignUpUrl="/chat"
+            afterSignUpUrl="/"
             routing="hash"
             appearance={{
               variables: {
