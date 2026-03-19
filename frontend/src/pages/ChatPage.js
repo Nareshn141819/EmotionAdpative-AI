@@ -489,6 +489,8 @@ export default function ChatPage() {
             {[
               { id: 'voice',   label: '🎤 Voice'   },
               { id: 'emotion', label: '😊 Emotion'  },
+              { id: 'groq', label: '🧠 Concept Preparing' },
+              { id: 'murf', label: '🔊 Audio generating' },
             ].map((s, i, arr) => (
               <React.Fragment key={s.id}>
                 <div style={{
