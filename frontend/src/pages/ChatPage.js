@@ -488,7 +488,7 @@ export default function ChatPage() {
           <div style={S.pipeline}>
             {[
               { id: 'voice',   label: '🎤 Voice'   },
-              { id: 'emotion', label: '😊 Emotion'  },
+              { id: 'emotion', label: '😊 Emotion'  }, 
               { id: 'groq', label: '🧠 Concept Preparing' },
               { id: 'murf', label: '🔊 Audio generating' },
             ].map((s, i, arr) => (
