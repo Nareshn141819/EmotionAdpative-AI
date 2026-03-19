@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 
 // ── Backend URL ──────────────────────────────────────────────────
-const API = process.env.REACT_APP_BACKEND_URL || 'https://YOUR-APP.onrender.com';
+const API = process.env.REACT_APP_BACKEND_URL || 'https://emotion-adpative-ai.onrender.com';
 
 // ── Emotion config ───────────────────────────────────────────────
 const EMO = {
