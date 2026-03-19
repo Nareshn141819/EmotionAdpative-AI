@@ -2,7 +2,7 @@
   "name": "edubot-frontend",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://nareshn141819.github.io/EmotionAdpative-AI",
+  "homepage": "https://nareshn141819.github.io/EmotionAdpative-AI" ,
   "dependencies": {
     "@clerk/clerk-react": "^5.0.0",
     "react": "^18.3.0",
