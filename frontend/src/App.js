@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '@clerk/clerk-react';
 import LandingPage from './pages/LandingPage';
 import AuthPage from './pages/AuthPage';
@@ -15,8 +15,8 @@ function ProtectedRoute({ children }) {
 function LoadingScreen() {
   return (
     <div style={{
-      height: '100vh', display: 'flex', alignItems: 'center', 
-      justifyContent: 'center', background: '#07090f', 
+      height: '100vh', display: 'flex', alignItems: 'center',
+      justifyContent: 'center', background: '#07090f',
       flexDirection: 'column', gap: '16px'
     }}>
       <div style={{
@@ -34,7 +34,7 @@ function LoadingScreen() {
 
 export default function App() {
   return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/auth" element={<AuthPage />} />
@@ -45,6 +45,6 @@ export default function App() {
         } />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
