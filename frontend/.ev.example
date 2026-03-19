@@ -1,0 +1,7 @@
+# Copy this file to .env and fill in values
+
+# Clerk publishable key (from clerk.com dashboard)
+REACT_APP_CLERK_PUBLISHABLE_KEY=pk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# Your Render backend URL (e.g. https://edubot-backend.onrender.com)
+REACT_APP_BACKEND_URL=https://YOUR-APP-NAME.onrender.com
