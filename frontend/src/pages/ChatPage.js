@@ -218,7 +218,7 @@ export default function ChatPage() {
   useEffect(() => {
     const name = user?.firstName || 'there';
     addBotMsg(
-      `**Hey ${name}! Welcome to Emotion AI Bot** 🎓\n\nI'm your emotion-aware AI tutor. I detect your emotional state and **adapt my teaching style** to make you understand good.\nSpeak 🎤 or type to get started!`,
+      `**Hey ${name}! Welcome to Emotion AI Bot** \n\nI'm your emotion-aware AI tutor. I detect your emotional state and **adapt my teaching style** to make you understand good.\nSpeak 🎤 or type to get started!`,
       'happy', null, true
     );
   }, []); // eslint-disable-line
@@ -252,7 +252,7 @@ export default function ChatPage() {
 
   // ── Mic ──────────────────────────────────────────────────────
   const toggleMic = useCallback(() => {
-    if (recording) { recogRef.current?.stop(); setRecording(false); setVstatus('Press 🎤 to speak, or type below'); return; }
+    if (recording) { recogRef.current?.stop(); setRecording(false); setVstatus(''); return; }
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) { showToast('Use Chrome/Edge for voice input','err'); return; }
     const r = new SR();
