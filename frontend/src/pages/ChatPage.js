@@ -205,25 +205,58 @@ export default function ChatPage() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   
   useEffect(() => {
-  const root = document.body;
-  if (theme === 'dark') {
-    root.style.background = '#07090f';
-    root.style.color = '#e8eef8';
-    document.documentElement.style.setProperty('--bg', '#07090f');
-    document.documentElement.style.setProperty('--surface', '#0e1219');
-    document.documentElement.style.setProperty('--text', '#e8eef8');
-  } else if (theme === 'white') {
-    root.style.background = '#ffffff';
-    root.style.color = '#0f172a';
-    document.documentElement.style.setProperty('--bg', '#ffffff');
-    document.documentElement.style.setProperty('--surface', '#f1f5f9');
-    document.documentElement.style.setProperty('--text', '#0f172a');
-  } else {
-    root.style.background = '';
-    root.style.color = '';
-  }
+  const themes = {
+    dark: {
+      '--t-bg':       '#07090f',
+      '--t-surface':  '#0e1219',
+      '--t-surface2': '#141c28',
+      '--t-surface3': '#1b2438',
+      '--t-border':   'rgba(255,255,255,0.07)',
+      '--t-text':     '#e8eef8',
+      '--t-muted':    '#5a6a88',
+      '--t-bubble-bot': '#141c28',
+      '--t-bubble-user': 'rgba(56,189,248,0.07)',
+      '--t-sidebar':  'rgba(14,18,25,0.95)',
+      '--t-topbar':   'rgba(7,9,15,0.95)',
+      '--t-input':    '#0e1219',
+    },
+    white: {
+      '--t-bg':       '#f8fafc',
+      '--t-surface':  '#ffffff',
+      '--t-surface2': '#f1f5f9',
+      '--t-surface3': '#e2e8f0',
+      '--t-border':   'rgba(0,0,0,0.08)',
+      '--t-text':     '#0f172a',
+      '--t-muted':    '#64748b',
+      '--t-bubble-bot': '#f1f5f9',
+      '--t-bubble-user': 'rgba(56,189,248,0.08)',
+      '--t-sidebar':  'rgba(248,250,252,0.98)',
+      '--t-topbar':   'rgba(255,255,255,0.95)',
+      '--t-input':    '#ffffff',
+    },
+    system: {
+      '--t-bg':       '',
+      '--t-surface':  '',
+      '--t-surface2': '',
+      '--t-surface3': '',
+      '--t-border':   '',
+      '--t-text':     '',
+      '--t-muted':    '',
+      '--t-bubble-bot': '',
+      '--t-bubble-user': '',
+      '--t-sidebar':  '',
+      '--t-topbar':   '',
+      '--t-input':    '',
+    },
+  };
+
+  const selected = themes[theme] || themes.dark;
+  const root = document.documentElement;
+  Object.entries(selected).forEach(([k, v]) => root.style.setProperty(k, v));
+  document.body.style.background = selected['--t-bg'];
+  document.body.style.color = selected['--t-text'];
   localStorage.setItem('edubot-theme', theme);
-  }, [theme]);
+}, [theme]);
   
   useEffect(() => {
     const fn = () => setIsMobile(window.innerWidth < 768);
@@ -459,13 +492,13 @@ export default function ChatPage() {
   </>
   );
   return (
-    <div style={{ height:'100vh', background:'#07090f', display:'flex', flexDirection:'column', fontFamily:"'Outfit',sans-serif", color:'#e8eef8', overflow:'hidden', position:'relative' }}>
+    <div style={{ height:'100vh', background: 'var(--t-bg)', display:'flex', flexDirection:'column', fontFamily:"'Outfit',sans-serif", color:'#e8eef8', overflow:'hidden', position:'relative' }}>
 
       {/* Ambient */}
       <div style={{ position:'fixed', inset:0, pointerEvents:'none', zIndex:0, background:`radial-gradient(ellipse 55% 35% at 15% 5%, rgba(56,189,248,0.04) 0,transparent 60%), radial-gradient(ellipse 45% 45% at 85% 85%, rgba(129,140,248,0.04) 0,transparent 60%)` }} />
 
       {/* ── TOPBAR ── */}
-      <header style={{ flexShrink:0, display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 clamp(12px,3vw,20px)', height:'clamp(52px,8vw,60px)', borderBottom:'1px solid rgba(255,255,255,0.06)', background:'rgba(7,9,15,0.95)', backdropFilter:'blur(20px)', zIndex:50, position:'relative' }}>
+      <header style={{ flexShrink:0, display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 clamp(12px,3vw,20px)', height:'clamp(52px,8vw,60px)', borderBottom:'1px solid rgba(255,255,255,0.06)', background: 'var(--t-topbar)', backdropFilter: 'blur(20px)', zIndex:50, position:'relative' }}>
         <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
           {/* Hamburger on mobile */}
           {isMobile && (
@@ -515,7 +548,7 @@ export default function ChatPage() {
           width: isMobile ? 'clamp(240px,75vw,300px)' : '220px',
           flexShrink: 0,
           borderRight: '1px solid rgba(255,255,255,0.06)',
-          background: 'rgba(14,18,25,0.95)',
+          background: 'var(--t-sidebar)',
           backdropFilter: 'blur(16px)',
           overflowY: 'auto',
           zIndex: isMobile ? 45 : 1,
@@ -533,7 +566,7 @@ export default function ChatPage() {
         <div style={{ flex:1, display:'flex', flexDirection:'column', overflow:'hidden', minWidth:0 }}>
 
           {/* Messages */}
-          <div ref={chatRef} style={{ flex:1, overflowY:'auto', padding:'clamp(16px,3vw,24px) clamp(12px,3vw,28px)', display:'flex', flexDirection:'column', gap:'16px', scrollbarWidth:'thin', scrollbarColor:'#1b2438 transparent' }}>
+          <div ref={chatRef} style={{ flex:1, overflowY:'auto',background: 'var(--t-bubble-bot)', padding:'clamp(16px,3vw,24px) clamp(12px,3vw,28px)', display:'flex', flexDirection:'column', gap:'16px', scrollbarWidth:'thin', scrollbarColor:'#1b2438 transparent' }}>
             {messages.map(msg =>
               msg.role==='thinking'
                 ? <ThinkingBubble key={msg.id} />
@@ -556,7 +589,7 @@ export default function ChatPage() {
           )}
 
           {/* Input zone */}
-          <div style={{ padding:'clamp(10px,2vw,14px) clamp(12px,3vw,28px) clamp(12px,2vw,18px)', borderTop:'1px solid rgba(255,255,255,0.06)', background:'rgba(7,9,15,0.85)', backdropFilter:'blur(16px)', flexShrink:0 }}>
+          <div style={{ padding:'clamp(10px,2vw,14px) clamp(12px,3vw,28px) clamp(12px,2vw,18px)', borderTop:'1px solid rgba(255,255,255,0.06)', background: 'var(--t-topbar)', backdropFilter:'blur(16px)', flexShrink:0 }}>
             <div style={{ fontSize:'11px', color:'#5a6a88', fontFamily:'monospace', marginBottom:'7px', minHeight:'16px', display:'flex', alignItems:'center', gap:'7px' }}>
               {recording && [0,0.1,0.2,0.3,0.4].map((d,i) => <span key={i} style={{ width:'3px', background:'#38bdf8', borderRadius:'2px', display:'inline-block', animation:`wave 0.7s ease ${d}s infinite` }} />)}
               <span>{vstatus}</span>
@@ -565,7 +598,7 @@ export default function ChatPage() {
               <textarea ref={textRef} value={input}
                 placeholder="Ask anything…"
                 rows={1}
-                style={{ flex:1, padding:'clamp(10px,2vw,12px) clamp(12px,2vw,15px)', background:'#0e1219', border:'1px solid rgba(255,255,255,0.08)', borderRadius:'12px', color:'#e8eef8', fontFamily:"'Outfit',sans-serif", fontSize:'clamp(13px,2vw,14px)', outline:'none', resize:'none', minHeight:'46px', maxHeight:'120px', lineHeight:1.55, transition:'border-color 0.2s' }}
+                style={{ flex:1, padding:'clamp(10px,2vw,12px) clamp(12px,2vw,15px)', background: 'var(--t-input)', border:'1px solid rgba(255,255,255,0.08)', borderRadius:'12px', color:'#e8eef8', fontFamily:"'Outfit',sans-serif", fontSize:'clamp(13px,2vw,14px)', outline:'none', resize:'none', minHeight:'46px', maxHeight:'120px', lineHeight:1.55, transition:'border-color 0.2s' }}
                 onChange={e => { setInput(e.target.value); e.target.style.height='auto'; e.target.style.height=Math.min(e.target.scrollHeight,120)+'px'; }}
                 onKeyDown={e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();} }}
                 onFocus={e => e.target.style.borderColor='rgba(56,189,248,0.35)'}
@@ -615,6 +648,25 @@ export default function ChatPage() {
         @keyframes fadeUp   { from{opacity:0;transform:translate(-50%,8px)} to{opacity:1;transform:translate(-50%,0)} }
         @keyframes bounceUp { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-7px)} }
         @keyframes slideDown { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+        :root {
+  --t-bg: #07090f;
+  --t-surface: #0e1219;
+  --t-surface2: #141c28;
+  --t-surface3: #1b2438;
+  --t-border: rgba(255,255,255,0.07);
+  --t-text: #e8eef8;
+  --t-muted: #5a6a88;
+  --t-bubble-bot: #141c28;
+  --t-bubble-user: rgba(56,189,248,0.07);
+  --t-sidebar: rgba(14,18,25,0.95);
+  --t-topbar: rgba(7,9,15,0.95);
+  --t-input: #0e1219;
+}
+
+/* Theme transitions */
+*, *::before, *::after {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
         * { -webkit-tap-highlight-color: transparent; }
         ::-webkit-scrollbar { width: 3px; }
         ::-webkit-scrollbar-thumb { background: #1b2438; border-radius: 2px; }
