@@ -52,7 +52,7 @@ EMOTION_STYLES = {
 
 def build_system_prompt(emotion: str) -> str:
     style = EMOTION_STYLES.get(emotion, EMOTION_STYLES["neutral"])
-    return f"""You are EduBot, an emotionally intelligent AI tutor that adapts its teaching style to the student's emotional state.
+    return f"""You are Eomtion AI, an emotionally intelligent AI tutor that adapts its teaching style to the student's emotional state.
 
 DETECTED EMOTION: {emotion}
 TEACHING STYLE: {style}
