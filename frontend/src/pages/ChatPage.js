@@ -356,10 +356,6 @@ export default function ChatPage() {
 
         <div style={{ display:'flex', alignItems:'center', gap:'clamp(6px,1.5vw,12px)' }}>
           {/* Emotion pill — hide label on very small screens */}
-          <div style={{ display:'flex', alignItems:'center', gap:'6px', padding:'4px clamp(8px,2vw,13px)', borderRadius:'100px', background:'#0e1219', border:`1px solid ${emoData.color}33`, fontSize:'clamp(11px,1.5vw,12px)', transition:'all 0.4s' }}>
-            <div style={{ width:'7px', height:'7px', borderRadius:'50%', background:emoData.color, boxShadow:`0 0 6px ${emoData.color}`, flexShrink:0 }} />
-            <span style={{ color:'#e8eef8', whiteSpace:'nowrap' }}>{emoData.icon} {!isMobile && emoData.label}</span>
-          </div>
           {/* Model badge — hide on mobile */}
           {!isMobile && (
             <div style={{ padding:'4px 11px', borderRadius:'8px', background:'rgba(56,189,248,0.08)', border:'1px solid rgba(56,189,248,0.2)', color:'#38bdf8', fontSize:'11px', fontFamily:'monospace', whiteSpace:'nowrap' }}>⚡ Llama 3.3 70B</div>
@@ -447,8 +443,8 @@ export default function ChatPage() {
               <button style={{ width:'clamp(42px,7vw,48px)', height:'clamp(42px,7vw,46px)', borderRadius:'11px', border:'none', cursor: busy ? 'not-allowed' : 'pointer', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'18px', flexShrink:0, transition:'all 0.2s', background: busy ? 'rgba(56,189,248,0.1)' : 'linear-gradient(135deg,#38bdf8,#818cf8)', color: busy ? '#38bdf8' : '#07090f', boxShadow: busy ? 'none' : '0 0 14px rgba(56,189,248,0.3)' }} onClick={() => sendMsg()} disabled={busy}>
                 {busy ? '⏳' : '➤'}
               </button>
-              <p>Emotional AI can make mistakes. Please double check responses</p>
             </div>
+            <p style={color:'#38bdf8', size:'25px'}>Emotional AI can make mistakes. Please double check responses</p>
           </div>
 
         </div>
