@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SignIn, SignUp } from '@clerk/clerk-react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth, Navigate } from '@clerk/clerk-react';
+import { useNavigate, Navigate } from 'react-router-dom';
+import { useAuth } from '@clerk/clerk-react';
 
 export default function AuthPage() {
   const [mode, setMode] = useState('signin');
