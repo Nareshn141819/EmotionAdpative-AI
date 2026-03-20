@@ -520,18 +520,20 @@ export default function ChatPage() {
             <span style={{ width:6, height:6, borderRadius:'50%', background:'#34d399', display:'inline-block', animation:'blink 2s infinite' }} />
             {!isMobile && 'LIVE'}
           </div>
-          <button onClick={() => setSettingsOpen(o => !o)} style={{
-             width: '34px', height: '34px', borderRadius: '9px',
-             background: settingsOpen ? 'rgba(56,189,248,0.1)' : 'rgba(255,255,255,0.05)',
-             border: `1px solid ${settingsOpen ? 'rgba(56,189,248,0.35)' : 'rgba(255,255,255,0.08)'}`,
-             color: settingsOpen ? '#38bdf8' : '#5a6a88',
-             cursor: 'pointer', fontSize: '16px',
-             display: 'flex', alignItems: 'center', justifyContent: 'center',
-             transition: 'all 0.2s',
-             }} title="Settings">
-             ⚙️
-            </button>
-          <UserButton afterSignOutUrl="/#/" />
+            <UserButton afterSignOutUrl="/#/">
+  <UserButton.MenuItems>
+    <UserButton.Action
+      label="Settings"
+      labelIcon={<span>⚙️</span>}
+      onClick={() => setSettingsOpen(o => !o)}
+    />
+    <UserButton.Action
+      label="Get Help"
+      labelIcon={<span>🆘</span>}
+      onClick={() => window.open('mailto:support@edubot.ai')}
+    />
+  </UserButton.MenuItems>
+</UserButton>
         </div>
       </header>
 
