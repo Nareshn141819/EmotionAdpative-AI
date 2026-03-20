@@ -234,7 +234,7 @@ export default function ChatPage() {
   useEffect(() => {
     const name = user?.firstName || 'there';
     addBotMsg(
-      `**Hey ${name}! Welcome to Emotion AI Bot** 🎓\n\nI'm your emotion-aware AI tutor. I detect your emotional state and **adapt my teaching style** \nSpeak 🎤 or type to get started!`,
+      `**Hey ${name}! Welcome to Emotion AI Bot** 🎓\n\nI'm your emotion-aware AI tutor. I detect your emotional state and **adapt my teaching style** to make you understand good.\nSpeak 🎤 or type to get started!`,
       'happy', null, true // autoplay welcome
     );
   }, []); // eslint-disable-line
@@ -547,6 +547,7 @@ export default function ChatPage() {
             }} onClick={() => sendMsg()} disabled={busy}>
               {busy ? '⏳' : '➤'}
             </button>
+            <p>EmotionAdaptive AI can make mistakes.Please double check responses</p>
           </div>
         </div>
       </main>
