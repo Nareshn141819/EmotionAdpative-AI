@@ -351,7 +351,7 @@ export default function ChatPage() {
             </button>
           )}
           <div style={{ width:'30px', height:'30px', borderRadius:'9px', background:'linear-gradient(135deg,#38bdf8,#818cf8)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'15px', boxShadow:'0 0 10px rgba(56,189,248,0.3)', flexShrink:0 }}>🎓</div>
-          <span style={{ fontSize:'clamp(15px,2.5vw,17px)', fontWeight:800, letterSpacing:'-0.5px', background:'linear-gradient(90deg,#38bdf8,#818cf8)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>EduBot</span>
+          <span style={{ fontSize:'clamp(15px,2.5vw,17px)', fontWeight:800, letterSpacing:'-0.5px', background:'linear-gradient(90deg,#38bdf8,#818cf8)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Eomtion AI</span>
         </div>
 
         <div style={{ display:'flex', alignItems:'center', gap:'clamp(6px,1.5vw,12px)' }}>
