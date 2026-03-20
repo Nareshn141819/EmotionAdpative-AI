@@ -96,12 +96,12 @@ export default function LandingPage() {
           🧠
         </div>
 
-<style>
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-</style>
+        <style>
+          @keyframes float {
+          0%, 100% { transform: translateY(0) },
+          50% { transform: translateY(-10px) }
+        }
+        </style>
 
         <h1 style={{ fontSize:'clamp(32px,7vw,80px)', fontWeight:800, letterSpacing:'-2px',
           lineHeight:1.05, marginBottom:'20px', maxWidth:'800px' }}>
