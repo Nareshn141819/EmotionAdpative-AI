@@ -198,9 +198,33 @@ export default function ChatPage() {
   const [toast,      setToast]      = useState(null);
   const [playingId,  setPlayingId]  = useState(null);
   const [sideOpen,   setSideOpen]   = useState(false); // mobile drawer
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [theme, setTheme] = useState(localStorage.getItem('edubot-theme') || 'dark');
 
   // Detect mobile
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  
+  useEffect(() => {
+  const root = document.body;
+  if (theme === 'dark') {
+    root.style.background = '#07090f';
+    root.style.color = '#e8eef8';
+    document.documentElement.style.setProperty('--bg', '#07090f');
+    document.documentElement.style.setProperty('--surface', '#0e1219');
+    document.documentElement.style.setProperty('--text', '#e8eef8');
+  } else if (theme === 'white') {
+    root.style.background = '#ffffff';
+    root.style.color = '#0f172a';
+    document.documentElement.style.setProperty('--bg', '#ffffff');
+    document.documentElement.style.setProperty('--surface', '#f1f5f9');
+    document.documentElement.style.setProperty('--text', '#0f172a');
+  } else {
+    root.style.background = '';
+    root.style.color = '';
+  }
+  localStorage.setItem('edubot-theme', theme);
+  }, [theme]);
+  
   useEffect(() => {
     const fn = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', fn);
@@ -335,6 +359,105 @@ export default function ChatPage() {
 
   const emoData = EMO[emotion]||EMO.neutral;
 
+  const SettingsPanel = () => (
+  <>
+    {/* Overlay */}
+    <div onClick={() => setSettingsOpen(false)} style={{
+      position: 'fixed', inset: 0, zIndex: 200,
+      background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)',
+    }} />
+
+    {/* Panel */}
+    <div style={{
+      position: 'fixed', top: '68px', right: 'clamp(12px,3vw,20px)',
+      zIndex: 201, width: 'clamp(260px, 80vw, 300px)',
+      background: '#0e1219', border: '1px solid rgba(255,255,255,0.1)',
+      borderRadius: '16px', padding: '20px',
+      boxShadow: '0 24px 60px rgba(0,0,0,0.6)',
+      animation: 'slideDown 0.2s ease',
+    }}>
+      {/* Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
+        <span style={{ fontWeight: 700, fontSize: '15px', color: '#e8eef8' }}>⚙️ Settings</span>
+        <button onClick={() => setSettingsOpen(false)} style={{ background: 'none', border: 'none', color: '#5a6a88', cursor: 'pointer', fontSize: '20px', lineHeight: 1 }}>×</button>
+      </div>
+
+      {/* Appearance */}
+      <div style={{ marginBottom: '20px' }}>
+        <div style={{ fontSize: '11px', color: '#5a6a88', textTransform: 'uppercase', letterSpacing: '1px', fontFamily: 'monospace', marginBottom: '10px' }}>
+          🎨 App Appearance
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {[
+            { value: 'dark',   label: '🌙 Dark',           desc: 'Dark background' },
+            { value: 'white',  label: '☀️ Light',          desc: 'White background' },
+            { value: 'system', label: '💻 System Default', desc: 'Follows your device' },
+          ].map(opt => (
+            <button key={opt.value} onClick={() => setTheme(opt.value)} style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '10px 14px', borderRadius: '10px', cursor: 'pointer',
+              background: theme === opt.value ? 'rgba(56,189,248,0.1)' : 'rgba(255,255,255,0.03)',
+              border: `1px solid ${theme === opt.value ? 'rgba(56,189,248,0.4)' : 'rgba(255,255,255,0.07)'}`,
+              color: theme === opt.value ? '#38bdf8' : '#e8eef8',
+              fontFamily: "'Outfit',sans-serif", fontSize: '13px',
+              transition: 'all 0.2s', textAlign: 'left',
+            }}>
+              <span>{opt.label}</span>
+              <span style={{ fontSize: '11px', color: theme === opt.value ? '#38bdf8' : '#5a6a88' }}>
+                {opt.desc}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div style={{ height: '1px', background: 'rgba(255,255,255,0.07)', marginBottom: '16px' }} />
+
+      {/* Get Help */}
+      <a href="mailto:support@edubot.ai" style={{
+        display: 'flex', alignItems: 'center', gap: '10px',
+        padding: '10px 14px', borderRadius: '10px',
+        background: 'rgba(255,255,255,0.03)',
+        border: '1px solid rgba(255,255,255,0.07)',
+        color: '#e8eef8', textDecoration: 'none',
+        fontSize: '13px', fontFamily: "'Outfit',sans-serif",
+        marginBottom: '8px', transition: 'all 0.2s',
+      }}
+        onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(56,189,248,0.3)'}
+        onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'}
+      >
+        <span>🆘</span>
+        <div>
+          <div style={{ fontWeight: 600 }}>Get Help</div>
+          <div style={{ fontSize: '11px', color: '#5a6a88' }}>Contact support</div>
+        </div>
+      </a>
+
+      {/* Divider */}
+      <div style={{ height: '1px', background: 'rgba(255,255,255,0.07)', margin: '12px 0' }} />
+
+      {/* Sign Out */}
+      <button
+        onClick={() => { setSettingsOpen(false); window.location.href = '/#/'; }}
+        style={{
+          width: '100%', padding: '11px', borderRadius: '10px',
+          background: 'rgba(248,113,113,0.08)',
+          border: '1px solid rgba(248,113,113,0.2)',
+          color: '#f87171', cursor: 'pointer',
+          fontSize: '13px', fontWeight: 600,
+          fontFamily: "'Outfit',sans-serif",
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+          transition: 'all 0.2s',
+        }}
+        onMouseEnter={e => e.currentTarget.style.background = 'rgba(248,113,113,0.15)'}
+        onMouseLeave={e => e.currentTarget.style.background = 'rgba(248,113,113,0.08)'}
+      >
+        🚪 Sign Out
+      </button>
+    </div>
+  </>
+  );
   return (
     <div style={{ height:'100vh', background:'#07090f', display:'flex', flexDirection:'column', fontFamily:"'Outfit',sans-serif", color:'#e8eef8', overflow:'hidden', position:'relative' }}>
 
@@ -364,6 +487,17 @@ export default function ChatPage() {
             <span style={{ width:6, height:6, borderRadius:'50%', background:'#34d399', display:'inline-block', animation:'blink 2s infinite' }} />
             {!isMobile && 'LIVE'}
           </div>
+          <button onClick={() => setSettingsOpen(o => !o)} style={{
+             width: '34px', height: '34px', borderRadius: '9px',
+             background: settingsOpen ? 'rgba(56,189,248,0.1)' : 'rgba(255,255,255,0.05)',
+             border: `1px solid ${settingsOpen ? 'rgba(56,189,248,0.35)' : 'rgba(255,255,255,0.08)'}`,
+             color: settingsOpen ? '#38bdf8' : '#5a6a88',
+             cursor: 'pointer', fontSize: '16px',
+             display: 'flex', alignItems: 'center', justifyContent: 'center',
+             transition: 'all 0.2s',
+             }} title="Settings">
+             ⚙️
+            </button>
           <UserButton afterSignOutUrl="/#/" />
         </div>
       </header>
@@ -465,6 +599,8 @@ export default function ChatPage() {
         </div>
       </div>
 
+      {/* Settings Panel */}
+        {settingsOpen && <SettingsPanel />}
       {/* Toast */}
       {toast && (
         <div style={{ position:'fixed', bottom:'80px', left:'50%', transform:'translateX(-50%)', padding:'8px 16px', borderRadius:'10px', background:'#0e1219', fontSize:'13px', zIndex:999, border: toast.type==='err' ? '1px solid rgba(248,113,113,0.35)' : '1px solid rgba(52,211,153,0.35)', color: toast.type==='err' ? '#f87171' : '#34d399', animation:'fadeUp 0.3s ease', whiteSpace:'nowrap' }}>
@@ -478,6 +614,7 @@ export default function ChatPage() {
         @keyframes micpulse { 0%,100%{box-shadow:0 0 0 0 rgba(244,114,182,0.4)} 50%{box-shadow:0 0 0 8px rgba(244,114,182,0)} }
         @keyframes fadeUp   { from{opacity:0;transform:translate(-50%,8px)} to{opacity:1;transform:translate(-50%,0)} }
         @keyframes bounceUp { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-7px)} }
+        @keyframes slideDown { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
         * { -webkit-tap-highlight-color: transparent; }
         ::-webkit-scrollbar { width: 3px; }
         ::-webkit-scrollbar-thumb { background: #1b2438; border-radius: 2px; }
