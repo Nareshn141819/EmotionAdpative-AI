@@ -82,16 +82,7 @@ function LoadingScreen() {
         Emotion AI
       </div>
 
-      {/* Animated dots */}
-      <div style={{ display: 'flex', gap: '6px', animation: 'fadeInUp 0.8s ease' }}>
-        {[0, 0.2, 0.4].map((delay, i) => (
-          <div key={i} style={{
-            width: '6px', height: '6px', borderRadius: '50%',
-            background: '#38bdf8',
-            animation: `dotPulse 1.2s ease-in-out ${delay}s infinite`,
-          }} />
-        ))}
-      </div>
+      
     </div>
   );
 }
