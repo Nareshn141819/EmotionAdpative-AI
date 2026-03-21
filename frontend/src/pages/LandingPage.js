@@ -50,7 +50,7 @@ export default function LandingPage() {
             fontSize:'17px', boxShadow:'0 0 14px rgba(56,189,248,0.3)' }}>🎓</div>
           <span style={{ fontSize:'17px', fontWeight:800, letterSpacing:'-0.5px',
             background:'linear-gradient(90deg,#38bdf8,#818cf8)',
-            WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Eomtion AI</span>
+            WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Emotion AI</span>
         </div>
         <div style={{ display:'flex', gap:'10px' }}>
           <button onClick={() => navigate('/auth')} style={{ padding:'8px 18px', borderRadius:'10px',
