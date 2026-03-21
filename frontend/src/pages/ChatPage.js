@@ -404,7 +404,7 @@ export default function ChatPage() {
     <div style={{
       position: 'fixed', top: '68px', right: 'clamp(12px,3vw,20px)',
       zIndex: 201, width: 'clamp(260px, 80vw, 300px)',
-      background: '#0e1219', border: '1px solid rgba(255,255,255,0.1)',
+      background: '#C2C2C2', border: '1px solid rgba(255,255,255,0.1)',
       borderRadius: '16px', padding: '20px',
       boxShadow: '0 24px 60px rgba(0,0,0,0.6)',
       animation: 'slideDown 0.2s ease',
