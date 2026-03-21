@@ -116,7 +116,7 @@ function Message({ msg, isPlaying, onTogglePlay }) {
             {emo.icon} {emo.label}
           </span>
         </div>
-        <div style={{ padding:'11px 15px', borderRadius:'13px', fontSize:'clamp(13px,2vw,14px)', background: isBot ? '#141c28' : 'rgba(56,189,248,0.07)', color: isBot ? 'var(--t-text)' : '#0f172a', border:`1px solid ${isBot ? 'rgba(255,255,255,0.07)' : 'rgba(56,189,248,0.12)'}`, borderTopLeftRadius: isBot ? '4px' : '13px', borderTopRightRadius: isBot ? '13px' : '4px' }}>
+        <div style={{ padding:'11px 15px', borderRadius:'13px', fontSize:'clamp(13px,2vw,14px)', background: isBot ? 'var(--t-bubble-bot)' : 'var(--t-bubble-user)', color: 'var(--t-text)', border:`1px solid ${isBot ? 'rgba(255,255,255,0.07)' : 'rgba(56,189,248,0.12)'}`, borderTopLeftRadius: isBot ? '4px' : '13px', borderTopRightRadius: isBot ? '13px' : '4px' }}>
           <MsgContent text={msg.text} />
           {isBot && (
             <button onClick={onTogglePlay} style={{ display:'inline-flex', alignItems:'center', gap:'6px', marginTop:'9px', padding:'5px 13px', background: isPlaying ? 'rgba(56,189,248,0.15)' : 'rgba(56,189,248,0.07)', border:`1px solid ${isPlaying ? 'rgba(56,189,248,0.5)' : 'rgba(56,189,248,0.2)'}`, borderRadius:'100px', color:'#38bdf8', fontSize:'11px', cursor:'pointer', fontFamily:'monospace' }}>
@@ -215,7 +215,7 @@ export default function ChatPage() {
       '--t-text':     '#e8eef8',
       '--t-muted':    '#5a6a88',
       '--t-bubble-bot': '#141c28',
-      '--t-bubble-user': 'rgba(56,189,248,0.07)',
+      '--t-bubble-user': 'rgba(56,189,248,0.09)',
       '--t-sidebar':  'rgba(14,18,25,0.95)',
       '--t-topbar':   'rgba(7,9,15,0.95)',
       '--t-input':    '#0e1219',
@@ -229,7 +229,7 @@ export default function ChatPage() {
       '--t-text':     '#0f172a',
       '--t-muted':    '#64748b',
       '--t-bubble-bot': '#f1f5f9',
-      '--t-bubble-user': 'rgba(56,189,248,0.08)',
+      '--t-bubble-user': '#dbeafe',
       '--t-sidebar':  'rgba(248,250,252,0.98)',
       '--t-topbar':   'rgba(255,255,255,0.95)',
       '--t-input':    '#b4c4cf',
@@ -664,7 +664,8 @@ export default function ChatPage() {
   --t-topbar: rgba(7,9,15,0.95);
   --t-input: #0e1219;
 }
-
+.bubble-text { color: var(--t-text) !important; }
+p, li, strong, em, code { color: inherit !important; }
 /* Theme transitions */
 *, *::before, *::after {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
