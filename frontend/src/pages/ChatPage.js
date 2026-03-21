@@ -600,7 +600,7 @@ export default function ChatPage() {
               <textarea ref={textRef} value={input}
                 placeholder="Ask anything…"
                 rows={1}
-                style={{ flex:1, padding:'clamp(10px,2vw,12px) clamp(12px,2vw,15px)', background: 'var(--t-input)', border:'1px solid rgba(255,255,255,0.08)', borderRadius:'12px', color:'#e8eef8', fontFamily:"'Outfit',sans-serif", fontSize:'clamp(13px,2vw,14px)', outline:'none', resize:'none', minHeight:'46px', maxHeight:'120px', lineHeight:1.55, transition:'border-color 0.2s' }}
+                style={{ flex:1, padding:'clamp(10px,2vw,12px) clamp(12px,2vw,15px)', background: 'var(--t-input)', border:'1px solid rgba(255,255,255,0.08)', borderRadius:'12px', color: 'var(--t-text)', fontFamily:"'Outfit',sans-serif", fontSize:'clamp(13px,2vw,14px)', outline:'none', resize:'none', minHeight:'46px', maxHeight:'120px', lineHeight:1.55, transition:'border-color 0.2s' }}
                 onChange={e => { setInput(e.target.value); e.target.style.height='auto'; e.target.style.height=Math.min(e.target.scrollHeight,120)+'px'; }}
                 onKeyDown={e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();} }}
                 onFocus={e => e.target.style.borderColor='rgba(56,189,248,0.35)'}
