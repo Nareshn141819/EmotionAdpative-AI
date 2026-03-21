@@ -70,18 +70,6 @@ function LoadingScreen() {
           animation: 'spinPulse 3s ease-in-out infinite',
         }}>🎓</div>
       </div>
-
-      {/* App name */}
-      <div style={{
-        color: '#e8eef8', fontSize: '18px', fontWeight: 700,
-        letterSpacing: '-0.5px',
-        background: 'linear-gradient(90deg, #38bdf8, #818cf8)',
-        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-        animation: 'fadeInUp 0.6s ease',
-      }}>
-        Emotion AI
-      </div>
-
       
     </div>
   );
