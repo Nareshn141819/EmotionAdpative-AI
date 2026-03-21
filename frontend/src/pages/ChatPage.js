@@ -116,7 +116,7 @@ function Message({ msg, isPlaying, onTogglePlay }) {
             {emo.icon} {emo.label}
           </span>
         </div>
-        <div style={{ padding:'11px 15px', borderRadius:'13px', fontSize:'clamp(13px,2vw,14px)', background: isBot ? 'var(--t-bubble-bot)' : 'var(--t-bubble-user)', color: 'var(--t-text)', border:`1px solid ${isBot ? 'rgba(255,255,255,0.07)' : 'rgba(56,189,248,0.12)'}`, borderTopLeftRadius: isBot ? '4px' : '13px', borderTopRightRadius: isBot ? '13px' : '4px' }}>
+        <div style={{ padding:'11px 15px', borderRadius:'13px', fontSize:'clamp(13px,2vw,14px)', background: isBot ? 'var(--t-bubble-bot)' : 'var(--t-bubble-user)', color: 'var(--t-text)', border:`1px solid ${isBot ? 'var(--t-border)' : 'rgba(56,189,248,0.12)'}`, borderTopLeftRadius: isBot ? '4px' : '13px', borderTopRightRadius: isBot ? '13px' : '4px' }}>
           <MsgContent text={msg.text} />
           {isBot && (
             <button onClick={onTogglePlay} style={{ display:'inline-flex', alignItems:'center', gap:'6px', marginTop:'9px', padding:'5px 13px', background: isPlaying ? 'rgba(56,189,248,0.15)' : 'rgba(56,189,248,0.07)', border:`1px solid ${isPlaying ? 'rgba(56,189,248,0.5)' : 'rgba(56,189,248,0.2)'}`, borderRadius:'100px', color:'#38bdf8', fontSize:'11px', cursor:'pointer', fontFamily:'monospace' }}>
@@ -228,7 +228,7 @@ export default function ChatPage() {
       '--t-border':   'rgba(0,0,0,0.09)',
       '--t-text':     '#0f172a',
       '--t-muted':    '#64748b',
-      '--t-bubble-bot': '#121416',
+      '--t-bubble-bot': '#f1f5f9',
       '--t-bubble-user': '#dbeaff',
       '--t-sidebar':  'rgba(248,250,252,0.98)',
       '--t-topbar':   'rgba(255,255,255,0.95)',
