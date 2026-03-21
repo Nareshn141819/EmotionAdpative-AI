@@ -46,7 +46,7 @@ function PageSpinner() {
         }} />
         {/* Center icon */}
         <div style={{
-          position: 'absolute', inset: '10px', borderRadius: '14px',
+          position: 'absolute', inset: '16px', borderRadius: '14px',
           background: 'linear-gradient(135deg, #38bdf8, #818cf8)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: '20px', animation: 'spinPulse 3s ease-in-out infinite',
