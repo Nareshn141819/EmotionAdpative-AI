@@ -530,7 +530,7 @@ export default function ChatPage() {
              <UserButton.Action
                label="Get Help"
                labelIcon={<span>📧</span>}
-               onClick={() => window.open(href='mailto:support@edubot.ai')}
+               onClick={() => window.open('mailto:support@edubot.ai')}
                 />
            </UserButton.MenuItems>
            </UserButton>
