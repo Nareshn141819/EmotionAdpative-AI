@@ -62,7 +62,7 @@ export default function AuthPage() {
           boxShadow: '0 0 28px rgba(56,189,248,0.4)',
         }}>🎓</div>
         <div style={{ fontSize: 'clamp(18px,3vw,22px)', fontWeight: 800, letterSpacing: '-0.5px', background: 'linear-gradient(90deg,#38bdf8,#818cf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-          EduBot
+          Eomtion AI
         </div>
         <div style={{ color: '#5a6a88', fontSize: 'clamp(12px,1.5vw,13px)', marginTop: '4px' }}>
           Emotion-Aware AI Tutor
