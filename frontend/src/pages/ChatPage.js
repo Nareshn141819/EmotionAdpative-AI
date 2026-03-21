@@ -472,7 +472,7 @@ export default function ChatPage() {
 
       {/* Sign Out */}
       <button
-        onClick={() => { setSettingsOpen(false); window.location.href = '/#/'; }}
+        onClick={() => { setSettingsOpen(false); window.location.href = '/EmotionAdpative-AI/'; }}
         style={{
           width: '100%', padding: '11px', borderRadius: '10px',
           background: 'rgba(248,113,113,0.08)',
