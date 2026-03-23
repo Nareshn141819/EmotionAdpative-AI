@@ -472,7 +472,7 @@ export default function ChatPage() {
 
       {/* Sign Out */}
       <button
-        onClick={() => { setSettingsOpen(false); window.location.href = '/EmotionAdpative-AI/'; }}
+        onClick={() => { setSettingsOpen(false); window.location.href = '/Emotion-AI/'; }}
         style={{
           width: '100%', padding: '11px', borderRadius: '10px',
           background: 'rgba(248,113,113,0.08)',
@@ -520,7 +520,7 @@ export default function ChatPage() {
             <span style={{ width:6, height:6, borderRadius:'50%', background:'#34d399', display:'inline-block', animation:'blink 2s infinite' }} />
             {!isMobile && 'LIVE'}
           </div>
-            <UserButton afterSignOutUrl="/EmotionAdpative-AI/">
+            <UserButton afterSignOutUrl="/Emotion-AI/">
              <UserButton.MenuItems>
                <UserButton.Action
                label="Settings"
