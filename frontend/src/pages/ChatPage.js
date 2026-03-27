@@ -472,7 +472,7 @@ export default function ChatPage() {
 
       {/* Sign Out */}
       <button 
-        onClick={() => { setSettingsOpen(false); afterSignOutUrl="/Emotion-AI/" }}
+        onClick={() => { setSettingsOpen(false); location.window(href="/Emotion-AI/") }}
         style={{
           width: '100%', padding: '11px', borderRadius: '10px',
           background: 'rgba(248,113,113,0.08)',
