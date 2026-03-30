@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
-import ReactMarkdown from 'react-markdown';import { db } from '../firebase';
+import ReactMarkdown from 'react-markdown';
+import { db } from '../firebase';
 import { collection, addDoc, getDocs, query, orderBy, serverTimestamp } from 'firebase/firestore';
 
 
