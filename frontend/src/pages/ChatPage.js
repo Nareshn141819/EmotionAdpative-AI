@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { useAuth, useUser, UserButton } from '@clerk/clerk-react';
-import ReactMarkdown from 'react-markdown';
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase';
+import ReactMarkdown from 'react-markdown';import { db } from '../firebase';
+import { collection, addDoc, getDocs, query, orderBy, serverTimestamp } from 'firebase/firestore';
+
 
 const API = process.env.REACT_APP_BACKEND_URL || 'https://emotion-adpative-ai.onrender.com';
 const GROQ_MODEL = 'llama-3.3-70b-versatile';
@@ -182,8 +185,9 @@ function SidebarContent({ voice, setVoice, emotion, sendMsg, onClose }) {
 }
 
 // ── Main ─────────────────────────────────────────────────────────
-export default function ChatPage() {
- const token = await auth.currentUser.getIdToken();
+export default function ChatPage(props){
+const token = user ? await user.getIdToken() : null;
+  
 
   const { user } = props;
 
@@ -258,6 +262,36 @@ export default function ChatPage() {
   document.body.style.color = selected['--t-text'];
   localStorage.setItem('edubot-theme', theme);
 }, [theme]);
+
+  // Load chat history from Firestore
+useEffect(() => {
+  if (!user) return;
+  const load = async () => {
+    try {
+      const q = query(
+        collection(db, 'users', user.uid, 'messages'),
+        orderBy('createdAt', 'asc')
+      );
+      const snap = await getDocs(q);
+      const msgs = snap.docs.map(d => d.data());
+      if (msgs.length > 0) {
+        setMessages(msgs);
+        setHistory(msgs.map(m => ({ role: m.role === 'bot' ? 'assistant' : 'user', content: m.text })));
+      }
+    } catch(e) { console.warn('Load history:', e); }
+  };
+  load();
+}, [user]);
+
+// Save message to Firestore
+async function saveToFirestore(msg) {
+  if (!user) return;
+  try {
+    await addDoc(collection(db, 'users', user.uid, 'messages'), {
+      ...msg, createdAt: serverTimestamp(),
+    });
+  } catch(e) { console.warn('Save msg:', e); }
+}
   
   useEffect(() => {
     const fn = () => setIsMobile(window.innerWidth < 768);
@@ -274,7 +308,7 @@ export default function ChatPage() {
   }, [messages]);
 
   useEffect(() => {
-    const name = user?.firstName || 'there';
+   const name = user?.displayName?.split(' ')[0] || user?.email?.split('@')[0] || 'there';
     addBotMsg(
       `**Hey ${name}! Welcome to Emotion AI Bot** \n\nI'm your emotion-aware AI tutor. I detect your emotional state and **adapt my teaching style** to make you understand good.\nSpeak in 🎤 or type to get started!`,
       'happy', null, true
@@ -286,6 +320,8 @@ export default function ChatPage() {
   function addBotMsg(text, emo, audioUrl=null, autoplay=false) {
     const id = Date.now() + Math.random();
     setMessages(prev => [...prev, { id, role:'bot', text, emotion:emo, audioUrl, time: new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) }]);
+    setMessages(prev => [...prev, msg]);
+  saveToFirestore(msg); // ← add this line
     if (autoplay) {
       setTimeout(() => {
         setPlayingId(id);
@@ -298,8 +334,11 @@ export default function ChatPage() {
   function addUserMsg(text, emo) {
     setMessages(prev => [...prev, { id: Date.now()+Math.random(), role:'user', text, emotion:emo, time: new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) }]);
   }
+   setMessages(prev => [...prev, msg]);
+  saveToFirestore(msg); // ← add this line
 
   function pset(u) { setPipeState(prev => ({ ...(prev||{}), ...u })); }
+  
 
   function togglePlay(msg) {
     if (playingId === msg.id) { AudioManager.stopAll(); setPlayingId(null); return; }
@@ -521,20 +560,9 @@ export default function ChatPage() {
             <span style={{ width:6, height:6, borderRadius:'50%', background:'#34d399', display:'inline-block', animation:'blink 2s infinite' }} />
             {!isMobile && 'LIVE'}
           </div>
-            <UserButton afterSignOutUrl="/Emotion-AI/">
-             <UserButton.MenuItems>
-               <UserButton.Action
-               label="Settings"
-               labelIcon={<span>⚙️</span>}
-               onClick={() => setSettingsOpen(o => !o)}
-                />
-             <UserButton.Action
-               label="Get Help"
-               labelIcon={<span>📧</span>}
-               onClick={() => window.open('mailto:support@edubot.ai')}
-                />
-           </UserButton.MenuItems>
-           </UserButton>
+            <button onClick={() => signOut(auth)} style={{ padding:'6px 14px', borderRadius:'9px', background:'rgba(248,113,113,0.1)', border:'1px solid rgba(248,113,113,0.25)', color:'#f87171', cursor:'pointer', fontSize:'12px', fontFamily:"'Outfit',sans-serif" }}>
+  Sign Out
+</button>
         </div>
       </header>
 
