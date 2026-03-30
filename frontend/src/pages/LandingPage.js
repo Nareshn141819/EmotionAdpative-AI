@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@clerk/clerk-react';
+
 
 const FEATURES = [
   { icon: '🎤', title: 'Voice-First Input', desc: 'Speak naturally — real-time speech-to-text transcription.' },
@@ -24,10 +24,10 @@ const PIPELINE = [
   ['🎤','Voice'],['📝','Transcribe'],['😊','Emotion'],['💬','Response']
 ];
 
-export default function LandingPage() {
+export default function LandingPage(props) {
   const navigate = useNavigate();
-  const { isSignedIn } = useAuth();
-  const go = () => navigate(isSignedIn ? '/chat' : '/auth');
+  const { user } = props;
+  const go = () => navigate(user ? '/chat' : '/auth');
 
   return (
     <div style={{ minHeight:'100vh', background:'#07090f', color:'#e8eef8', fontFamily:"'Outfit',sans-serif", overflowX:'hidden' }}>
