@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { SignIn, SignUp } from '@clerk/clerk-react';
+import { auth } from '../firebase';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { useAuth } from '@clerk/clerk-react';
+
+await signInWithEmailAndPassword(auth, email, password);
+await createUserWithEmailAndPassword(auth, email, password);
 
 export default function AuthPage() {
   const [mode, setMode] = useState('signin');
