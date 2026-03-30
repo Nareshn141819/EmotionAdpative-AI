@@ -34,11 +34,7 @@ function PageSpinner() {
       <div style={{ fontSize:'18px', fontWeight:700, letterSpacing:'-0.5px', background:'linear-gradient(90deg,#38bdf8,#818cf8)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', animation:'fadeInUp 0.6s ease' }}>
         Emotion AI
       </div>
-      <div style={{ display:'flex', gap:'6px', animation:'fadeInUp 0.8s ease' }}>
-        {[0,0.2,0.4].map((d,i) => (
-          <div key={i} style={{ width:'6px', height:'6px', borderRadius:'50%', background:'#38bdf8', animation:`dotPulse 1.2s ease-in-out ${d}s infinite` }} />
-        ))}
-      </div>
+     
     </div>
   );
 }
