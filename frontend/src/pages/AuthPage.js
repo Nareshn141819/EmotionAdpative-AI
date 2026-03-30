@@ -173,9 +173,3 @@ export default function AuthPage() {
     </div>
   );
 }
-          : <SignUp routing="hash" fallbackRedirectUrl="/chat" appearance={appearance} />
-        }
-      </div>
-    </div>
-  );
-}
