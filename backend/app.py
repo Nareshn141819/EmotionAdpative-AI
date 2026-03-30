@@ -3,9 +3,12 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import firebase_admin
 from firebase_admin import credentials, auth as firebase_auth 
+import json
 
-cred = credentials.Certificate(os.environ.get('FIREBASE_SERVICE_ACCOUNT'))
-firebase_admin.initialize_app(cred)
+firebase_credentials = json.loads(os.environ.get("FIREBASE_SERVICE_ACCOUNT", "{}"))
+if firebase_credentials:
+    cred = credentials.Certificate(firebase_credentials)
+    firebase_admin.initialize_app(cred)
 
 def verify_token(token):
     decoded = firebase_auth.verify_id_token(token)
