@@ -89,5 +89,4 @@ export default function App() {
       </RouteTransition>
     </HashRouter>
   );
-};
 }
