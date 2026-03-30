@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { HashRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@clerk/clerk-react';
+import { auth } from './firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 import LandingPage from './pages/LandingPage';
 import AuthPage from './pages/AuthPage';
 import ChatPage from './pages/ChatPage';
@@ -60,17 +61,16 @@ function PageSpinner() {
 // ── Route change detector ─────────────────────────────────────────
 function RouteTransition({ children }) {
   const location = useLocation();
-  const [loading, setLoading] = useState(false);
-  const [prevPath, setPrevPath] = useState(location.pathname);
+  const [user, setUser] = useState(null);
+  const [loaded, setLoaded] = useState(false);
 
-  useEffect(() => {
-    if (location.pathname !== prevPath) {
-      setLoading(true);
-      setPrevPath(location.pathname);
-      const t = setTimeout(() => setLoading(false), 700);
-      return () => clearTimeout(t);
-    }
-  }, [location.pathname]); // eslint-disable-line
+ useEffect(() => {
+  const unsub = onAuthStateChanged(auth, (u) => {
+    setUser(u);
+    setLoaded(true);
+  });
+  return unsub;
+}, []);
 
   return (
     <>
