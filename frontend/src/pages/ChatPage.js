@@ -515,7 +515,7 @@ async function saveToFirestore(msg) {
 
       {/* Sign Out */}
       <button 
-        onClick={() => { setSettingsOpen(false); window.location.href = "/Emotion-AI/"; }}
+        onClick={() => { setSettingsOpen(false) signOut(auth)}; window.location.href = "/Emotion-AI/"; }}
         style={{
           width: '100%', padding: '11px', borderRadius: '10px',
           background: 'rgba(248,113,113,0.08)',
@@ -564,8 +564,19 @@ async function saveToFirestore(msg) {
             {!isMobile && 'LIVE'}
           </div>
             <button onClick={() => signOut(auth)} style={{ padding:'6px 14px', borderRadius:'9px', background:'rgba(248,113,113,0.1)', border:'1px solid rgba(248,113,113,0.25)', color:'#f87171', cursor:'pointer', fontSize:'12px', fontFamily:"'Outfit',sans-serif" }}>
-  Sign Out
-</button>
+                Sign Out
+            </button>
+         <button onClick={() => setSettingsOpen(o => !o)} style={{
+            width: '34px', height: '34px', borderRadius: '9px',
+            background: settingsOpen ? 'rgba(56,189,248,0.1)' : 'rgba(255,255,255,0.05)',
+            border: `1px solid ${settingsOpen ? 'rgba(56,189,248,0.35)' : 'rgba(255,255,255,0.08)'}`,
+            color: settingsOpen ? '#38bdf8' : '#5a6a88',
+            cursor: 'pointer', fontSize: '16px',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'all 0.2s', flexShrink: 0,
+          }} title="Settings">
+                ⚙️
+          </button>
         </div>
       </header>
 
