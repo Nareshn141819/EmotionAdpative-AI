@@ -319,12 +319,12 @@ async function saveToFirestore(msg) {
   }, []); // eslint-disable-line
 
   function showToast(msg, type='') { setToast({ msg, type }); setTimeout(() => setToast(null), 3000); }
-
+ 
   function addBotMsg(text, emo, audioUrl=null, autoplay=false) {
     const id = Date.now() + Math.random();
-    setMessages(prev => [...prev, { id, role:'bot', text, emotion:emo, audioUrl, time: new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) }]);
+    const msg = { id, role:'bot', text, emotion:emo, audioUrl, time: new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) };
     setMessages(prev => [...prev, msg]);
-  saveToFirestore(msg); // ← add this line
+    saveToFirestore(msg);
     if (autoplay) {
       setTimeout(() => {
         setPlayingId(id);
@@ -335,11 +335,11 @@ async function saveToFirestore(msg) {
   }
 
   function addUserMsg(text, emo) {
-    setMessages(prev => [...prev, { id: Date.now()+Math.random(), role:'user', text, emotion:emo, time: new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) }]);
-  setMessages(prev => [...prev, msg]);
-  saveToFirestore(msg); // ← add this line 
+    const msg = { id: Date.now()+Math.random(), role:'user', text, emotion:emo, time: new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) };
+    setMessages(prev => [...prev, msg]);
+    saveToFirestore(msg);
   }
-
+  
   function pset(u) { setPipeState(prev => ({ ...(prev||{}), ...u })); }
   
 
