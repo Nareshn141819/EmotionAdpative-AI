@@ -29,7 +29,7 @@ function PageSpinner() {
       <div style={{ position:'relative', width:'80px', height:'80px' }}>
         <div style={{ position:'absolute', inset:0, borderRadius:'50%', border:'2px solid transparent', borderTopColor:'#38bdf8', borderRightColor:'#818cf8', animation:'ringRotate 1.2s linear infinite' }} />
         <div style={{ position:'absolute', inset:'6px', borderRadius:'50%', border:'2px solid transparent', borderBottomColor:'#f472b6', borderLeftColor:'#38bdf8', animation:'ringReverseR 1.8s linear infinite' }} />
-        <div style={{ position:'absolute', inset:'18px', borderRadius:'14px', background:'linear-gradient(135deg,#38bdf8,#818cf8)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'178px', animation:'spinPulse 3s ease-in-out infinite' }}>🧠</div>
+        <div style={{ position:'absolute', inset:'18px', borderRadius:'14px', background:'linear-gradient(135deg,#38bdf8,#818cf8)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'17px', animation:'spinPulse 3s ease-in-out infinite' }}>🧠</div>
       </div>
       <div style={{ fontSize:'18px', fontWeight:700, letterSpacing:'-0.5px', background:'linear-gradient(90deg,#38bdf8,#818cf8)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', animation:'fadeInUp 0.6s ease' }}>
         Emotion AI
