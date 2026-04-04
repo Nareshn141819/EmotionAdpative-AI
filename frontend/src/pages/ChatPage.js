@@ -3,7 +3,11 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 import ReactMarkdown from 'react-markdown';
 import { db } from '../firebase';
-import { collection, addDoc, getDocs, query, orderBy, serverTimestamp } from 'firebase/firestore';
+import {
+  collection, addDoc, getDocs, doc,
+  setDoc, query, orderBy, serverTimestamp,
+  updateDoc
+} from 'firebase/firestore';
 
 
 const API = process.env.REACT_APP_BACKEND_URL || 'https://emotion-adpative-ai.onrender.com';
@@ -134,7 +138,9 @@ function Message({ msg, isPlaying, onTogglePlay }) {
 }
 
 // ── Sidebar content ──────────────────────────────────────────────
-function SidebarContent({ voice, setVoice, emotion, sendMsg, onClose }) {
+function SidebarContent({ voice, setVoice, emotion, sendMsg, onClose,
+  sessions, loadSession, newChat, currentSessionId }) {
+
   const topics = [
     ['⚛️','Quantum Physics','Explain quantum entanglement simply'],
     ['💻','Recursion','Help me understand recursion in programming'],
@@ -145,9 +151,57 @@ function SidebarContent({ voice, setVoice, emotion, sendMsg, onClose }) {
     ['🍎',"Newton's Laws","Explain Newton's laws of motion"],
     ['🧬','DNA','What is DNA and how does it work?'],
   ];
+
   return (
     <div style={{ display:'flex', flexDirection:'column', gap:'5px', padding:'14px 10px', height:'100%', overflowY:'auto' }}>
-      <div style={{ fontSize:'10px', color:'#5a6a88', textTransform:'uppercase', letterSpacing:'1px', fontFamily:'monospace', padding:'4px 8px 2px' }}>Quick Topics</div>
+
+      {/* New Chat button */}
+      <button onClick={newChat} style={{
+        padding:'10px 12px', borderRadius:'9px', fontSize:'13px',
+        background:'linear-gradient(135deg,rgba(56,189,248,0.15),rgba(129,140,248,0.15))',
+        border:'1px solid rgba(56,189,248,0.3)',
+        color:'#38bdf8', cursor:'pointer', textAlign:'left',
+        fontFamily:"'Outfit',sans-serif", fontWeight:600,
+        display:'flex', alignItems:'center', gap:'8px', width:'100%',
+        marginBottom:'4px',
+      }}>
+        ✏️ New Chat
+      </button>
+
+      {/* Chat History */}
+      {sessions.length > 0 && (
+        <>
+          <div style={{ fontSize:'10px', color:'#5a6a88', textTransform:'uppercase', letterSpacing:'1px', fontFamily:'monospace', padding:'8px 8px 4px' }}>
+            Chat History
+          </div>
+          {sessions.map(s => (
+            <button key={s.id} onClick={() => loadSession(s.id)} style={{
+              padding:'8px 10px', borderRadius:'9px', fontSize:'12px',
+              background: s.id === currentSessionId ? 'rgba(56,189,248,0.1)' : 'transparent',
+              border:`1px solid ${s.id === currentSessionId ? 'rgba(56,189,248,0.3)' : 'rgba(255,255,255,0.06)'}`,
+              color: s.id === currentSessionId ? '#38bdf8' : '#5a6a88',
+              cursor:'pointer', textAlign:'left',
+              fontFamily:"'Outfit',sans-serif", transition:'all 0.2s',
+              display:'flex', flexDirection:'column', gap:'2px', width:'100%',
+            }}
+              onMouseEnter={e => { if(s.id !== currentSessionId) { e.currentTarget.style.background='#141c28'; e.currentTarget.style.color='#e8eef8'; }}}
+              onMouseLeave={e => { if(s.id !== currentSessionId) { e.currentTarget.style.background='transparent'; e.currentTarget.style.color='#5a6a88'; }}}
+            >
+              <span style={{ fontSize:'12px', fontWeight:600, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
+                💬 {s.title || 'New Chat'}
+              </span>
+              {s.lastMessage && (
+                <span style={{ fontSize:'10px', opacity:0.6, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
+                  {s.lastMessage}
+                </span>
+              )}
+            </button>
+          ))}
+        </>
+      )}
+
+      {/* Quick Topics */}
+      <div style={{ fontSize:'10px', color:'#5a6a88', textTransform:'uppercase', letterSpacing:'1px', fontFamily:'monospace', padding:'8px 8px 4px' }}>Quick Topics</div>
       {topics.map(([icon, label, prompt]) => (
         <button key={label} style={{ padding:'8px 10px', borderRadius:'9px', fontSize:'clamp(11px,1.5vw,12px)', background:'transparent', border:'1px solid rgba(255,255,255,0.06)', color:'#5a6a88', cursor:'pointer', textAlign:'left', fontFamily:"'Outfit',sans-serif", transition:'all 0.2s', display:'flex', alignItems:'center', gap:'7px' }}
           onClick={() => { sendMsg(prompt); onClose?.(); }}
@@ -158,6 +212,7 @@ function SidebarContent({ voice, setVoice, emotion, sendMsg, onClose }) {
         </button>
       ))}
 
+      {/* Voice */}
       <div style={{ fontSize:'10px', color:'#5a6a88', textTransform:'uppercase', letterSpacing:'1px', fontFamily:'monospace', padding:'10px 8px 4px' }}>Voice</div>
       {VOICES.map(v => (
         <button key={v.id} style={{ padding:'9px 12px', borderRadius:'9px', fontSize:'clamp(12px,1.5vw,13px)', background: voice===v.id ? 'rgba(56,189,248,0.1)' : 'transparent', border:`1px solid ${voice===v.id ? 'rgba(56,189,248,0.35)' : 'rgba(255,255,255,0.08)'}`, color: voice===v.id ? '#38bdf8' : '#5a6a88', cursor:'pointer', textAlign:'left', fontFamily:"'Outfit',sans-serif", transition:'all 0.2s', display:'flex', alignItems:'center', gap:'8px', width:'100%' }}
@@ -167,6 +222,7 @@ function SidebarContent({ voice, setVoice, emotion, sendMsg, onClose }) {
         </button>
       ))}
 
+      {/* Emotion Radar */}
       <div style={{ marginTop:'auto', paddingTop:'12px', borderTop:'1px solid rgba(255,255,255,0.06)' }}>
         <div style={{ fontSize:'10px', color:'#5a6a88', textTransform:'uppercase', letterSpacing:'1px', fontFamily:'monospace', marginBottom:'8px' }}>Emotion Radar</div>
         {Object.entries(EMO).map(([k, v]) => (
@@ -208,6 +264,9 @@ export default function ChatPage(props){
   const [sideOpen,   setSideOpen]   = useState(false); // mobile drawer
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem('edubot-theme') || 'dark');
+  const [sessionId,    setSessionId]    = useState(null);
+  const [sessions,     setSessions]     = useState([]);
+  const [showHistory,  setShowHistory]  = useState(false);
 
   // Detect mobile
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -286,15 +345,7 @@ useEffect(() => {
   load();
 }, [user]);
 
-// Save message to Firestore
-async function saveToFirestore(msg) {
-  if (!user) return;
-  try {
-    await addDoc(collection(db, 'users', user.uid, 'messages'), {
-      ...msg, createdAt: serverTimestamp(),
-    });
-  } catch(e) { console.warn('Save msg:', e); }
-}
+
   
   useEffect(() => {
     const fn = () => setIsMobile(window.innerWidth < 768);
@@ -310,14 +361,116 @@ async function saveToFirestore(msg) {
     if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [messages]);
 
-  useEffect(() => {
-   const name = user?.displayName?.split(' ')[0] || user?.email?.split('@')[0] || 'there';
-    addBotMsg(
-      `**Hey ${name}! Welcome to Emotion AI Bot** \n\nI'm your emotion-aware AI tutor. I detect your emotional state and **adapt my teaching style** to make you understand good.\nSpeak in 🎤 or type to get started!`,
-      'happy', null, true
-    );
-  }, []); // eslint-disable-line
+useEffect(() => {
+  if (!user) return;
 
+  const initSession = async () => {
+    try {
+      // Create new session
+      const sessionRef = await addDoc(
+        collection(db, 'users', user.uid, 'sessions'), {
+          title: 'New Chat',
+          createdAt: serverTimestamp(),
+          lastMessage: '',
+        }
+      );
+      setSessionId(sessionRef.id);
+
+      // Load all previous sessions for sidebar
+      const q = query(
+        collection(db, 'users', user.uid, 'sessions'),
+        orderBy('createdAt', 'desc')
+      );
+      const snap = await getDocs(q);
+      setSessions(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+
+    } catch(e) { console.warn('Session init:', e); }
+  };
+
+  initSession();
+
+  // Welcome message
+  const name = user?.displayName?.split(' ')[0] || user?.email?.split('@')[0] || 'there';
+  addBotMsg(
+    `**Hey ${name}! Welcome to Emotion AI Bot** 🧠\n\nI'm your emotion-aware AI tutor. I detect your emotional state and **adapt my teaching style** accordingly.\n\nSpeak 🎤 or type to get started!`,
+    'happy', null, true
+  );
+}, []); // eslint-disable-line
+
+  // Save message to Firestore
+async function saveToFirestore(msg) {
+  if (!user || !sessionId) return;
+  try {
+    // Save message to current session
+    await addDoc(
+      collection(db, 'users', user.uid, 'sessions', sessionId, 'messages'),
+      { ...msg, createdAt: serverTimestamp() }
+    );
+
+    // Update session title from first user message
+    if (msg.role === 'user' && messages.filter(m => m.role === 'user').length === 0) {
+      await updateDoc(
+        doc(db, 'users', user.uid, 'sessions', sessionId), {
+          title: msg.text.substring(0, 40),
+          lastMessage: msg.text.substring(0, 60),
+        }
+      );
+    }
+  } catch(e) { console.warn('Save msg:', e); }
+}
+
+  async function loadSession(sid) {
+  if (!user) return;
+  try {
+    const q = query(
+      collection(db, 'users', user.uid, 'sessions', sid, 'messages'),
+      orderBy('createdAt', 'asc')
+    );
+    const snap = await getDocs(q);
+    const msgs = snap.docs.map(d => ({ ...d.data(), id: d.id }));
+    setMessages(msgs);
+    setHistory(msgs.map(m => ({
+      role: m.role === 'bot' ? 'assistant' : 'user',
+      content: m.text
+    })));
+    setSessionId(sid);
+    setShowHistory(false);
+    if (isMobile) setSideOpen(false);
+  } catch(e) { console.warn('Load session:', e); }
+}
+
+  async function newChat() {
+  if (!user) return;
+  try {
+    const sessionRef = await addDoc(
+      collection(db, 'users', user.uid, 'sessions'), {
+        title: 'New Chat',
+        createdAt: serverTimestamp(),
+        lastMessage: '',
+      }
+    );
+    setSessionId(sessionRef.id);
+    setMessages([]);
+    setHistory([]);
+    setShowHistory(false);
+
+    // Refresh sessions list
+    const q = query(
+      collection(db, 'users', user.uid, 'sessions'),
+      orderBy('createdAt', 'desc')
+    );
+    const snap = await getDocs(q);
+    setSessions(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+
+    // Welcome message
+    const name = user?.displayName?.split(' ')[0] || 'there';
+    addBotMsg(
+      `**New chat started!** 🧠\n\nWhat would you like to learn today?`,
+      'happy', null, false
+    );
+  } catch(e) { console.warn('New chat:', e); }
+}
+  
   function showToast(msg, type='') { setToast({ msg, type }); setTimeout(() => setToast(null), 3000); }
  
   function addBotMsg(text, emo, audioUrl=null, autoplay=false) {
@@ -602,7 +755,15 @@ async function saveToFirestore(msg) {
           transition: isMobile ? 'left 0.3s ease' : 'none',
           paddingTop: isMobile ? 'clamp(52px,8vw,60px)' : '0',
         }}>
-          <SidebarContent voice={voice} setVoice={setVoice} emotion={emotion} sendMsg={sendMsg} onClose={() => setSideOpen(false)} />
+          <SidebarContent
+  voice={voice} setVoice={setVoice}
+  emotion={emotion} sendMsg={sendMsg}
+  onClose={() => setSideOpen(false)}
+  sessions={sessions}
+  loadSession={loadSession}
+  newChat={newChat}
+  currentSessionId={sessionId}
+/>
         </aside>
 
         {/* Chat + input */}
