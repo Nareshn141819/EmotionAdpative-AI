@@ -366,7 +366,7 @@ useEffect(() => {
 
   const initSession = async () => {
     try {
-      // Create new session
+      // Create brand new session every time
       const sessionRef = await addDoc(
         collection(db, 'users', user.uid, 'sessions'), {
           title: 'New Chat',
@@ -376,7 +376,7 @@ useEffect(() => {
       );
       setSessionId(sessionRef.id);
 
-      // Load all previous sessions for sidebar
+      // Load sessions list for sidebar only
       const q = query(
         collection(db, 'users', user.uid, 'sessions'),
         orderBy('createdAt', 'desc')
@@ -389,14 +389,19 @@ useEffect(() => {
 
   initSession();
 
+  // Always start with empty messages — fresh chat
+  setMessages([]);
+  setHistory([]);
+
   // Welcome message
-  const name = user?.displayName?.split(' ')[0] || user?.email?.split('@')[0] || 'there';
+  const name = user?.displayName?.split(' ')[0] ||
+               user?.email?.split('@')[0] || 'there';
   addBotMsg(
-    `**Hey ${name}! Welcome to Emotion AI Bot** 🧠\n\nI'm your emotion-aware AI tutor. I detect your emotional state and **adapt my teaching style** accordingly.\n\nSpeak 🎤 or type to get started!`,
+    `**Hey ${name}! Welcome to Emotion AI Bot** \n\nI'm your emotion-aware AI tutor. I detect your emotional state and **adapt my teaching style** to make you understand.\n\nSpeak 🎤 or type to get started!`,
     'happy', null, true
   );
 }, []); // eslint-disable-line
-
+  
   // Save message to Firestore
 async function saveToFirestore(msg) {
   if (!user || !sessionId) return;
@@ -422,25 +427,34 @@ async function saveToFirestore(msg) {
   async function loadSession(sid) {
   if (!user) return;
   try {
+    // Clear first
+    setMessages([]);
+    setHistory([]);
+
     const q = query(
       collection(db, 'users', user.uid, 'sessions', sid, 'messages'),
       orderBy('createdAt', 'asc')
     );
     const snap = await getDocs(q);
     const msgs = snap.docs.map(d => ({ ...d.data(), id: d.id }));
+
     setMessages(msgs);
     setHistory(msgs.map(m => ({
       role: m.role === 'bot' ? 'assistant' : 'user',
-      content: m.text
+      content: m.text,
     })));
     setSessionId(sid);
-    setShowHistory(false);
     if (isMobile) setSideOpen(false);
   } catch(e) { console.warn('Load session:', e); }
 }
 
-  async function newChat() {
+ async function newChat() {
   if (!user) return;
+
+  // Clear messages immediately
+  setMessages([]);
+  setHistory([]);
+
   try {
     const sessionRef = await addDoc(
       collection(db, 'users', user.uid, 'sessions'), {
@@ -450,9 +464,6 @@ async function saveToFirestore(msg) {
       }
     );
     setSessionId(sessionRef.id);
-    setMessages([]);
-    setHistory([]);
-    setShowHistory(false);
 
     // Refresh sessions list
     const q = query(
@@ -462,12 +473,14 @@ async function saveToFirestore(msg) {
     const snap = await getDocs(q);
     setSessions(snap.docs.map(d => ({ id: d.id, ...d.data() })));
 
-    // Welcome message
+    // Fresh welcome
     const name = user?.displayName?.split(' ')[0] || 'there';
     addBotMsg(
-      `**New chat started!** 🧠\n\nWhat would you like to learn today?`,
+      `**New chat started!** ✨\n\nWhat would you like to learn today?`,
       'happy', null, false
     );
+
+    if (isMobile) setSideOpen(false);
   } catch(e) { console.warn('New chat:', e); }
 }
   
