@@ -20,7 +20,8 @@ export default function NotFoundPage() {
       <h1 style={{ fontSize: 'clamp(60px,12vw,120px)', fontWeight: 800,
         letterSpacing: '-4px', margin: '0 0 8px',
         background: 'linear-gradient(135deg,#38bdf8,#818cf8)',
-        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+        animation: 'float 3s ease-in-out infinite' }}>
         404
       </h1>
 
