@@ -34,7 +34,7 @@ export default function NotFoundPage() {
     justifyContent: 'center',
     animation: 'fadeUp 0.6s ease forwards', animationDelay: '0.3s'
   }}
->404</span>
+>404
 </h1>
 
       <p style={{ fontSize: '18px', color: '#5a6a88',
