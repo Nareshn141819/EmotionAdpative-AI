@@ -92,7 +92,6 @@ Add these two secrets:
 
 | Secret name | Value |
 |-------------|-------|
-| `REACT_APP_CLERK_PUBLISHABLE_KEY` | `pk_test_xxxx...` |
 | `REACT_APP_BACKEND_URL` | `https://your-app.onrender.com` |
 
 ### Step 6 — Push to GitHub
@@ -100,7 +99,7 @@ Add these two secrets:
 ```bash
 git init
 git add .
-git commit -m "EduBot v2 - React + Clerk"
+git commit -m "Emotion AI v2 - React + Firebase"
 git branch -M main
 git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
 git push -u origin main
