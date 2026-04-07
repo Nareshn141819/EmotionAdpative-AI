@@ -20,10 +20,27 @@ export default function NotFoundPage() {
       <h1 style={{ fontSize: 'clamp(60px,12vw,120px)', fontWeight: 800,
         letterSpacing: '-4px', margin: '0 0 8px',
         background: 'linear-gradient(135deg,#38bdf8,#818cf8)',
-        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-        animation: 'float 3s ease-in-out infinite' }}>
+        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
         404
       </h1>
+      <h1
+  style={{
+    fontSize: 'clamp(60px,12vw,120px)',
+    fontWeight: 800,
+    letterSpacing: '-4px',
+    margin: '0 0 8px',
+    background: 'linear-gradient(135deg,#38bdf8,#818cf8)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    display: 'flex',
+    gap: '10px',
+    justifyContent: 'center'
+  }}
+>
+  <span style={{ animation: 'fadeUp 0.6s ease forwards', animationDelay: '0.3s', opacity: 0 }}>4</span>
+  <span style={{ animation: 'fadeUp 0.6s ease forwards', animationDelay: '0.7s', opacity: 0 }}>0</span>
+  <span style={{ animation: 'fadeUp 0.6s ease forwards', animationDelay: '1.1s', opacity: 0 }}>4</span>
+</h1>
 
       <p style={{ fontSize: '18px', color: '#5a6a88',
         marginBottom: '8px', fontWeight: 600 }}>
