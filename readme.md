@@ -1,6 +1,6 @@
-# EduBot v2 — React + Clerk + Groq + Murf AI
+# Emotion AI v2 — React + Firebase + Groq + Murf AI
 
-> Emotion-Aware AI Learning Assistant with React frontend, Clerk auth, Flask backend
+> Emotion-Aware AI Learning Assistant with React frontend, Firebase auth, Flask backend
 
 ---
 
@@ -40,16 +40,15 @@ your-repo/
 |---------|-----|----------|
 | Groq | console.groq.com | `gsk_...` |
 | Murf AI | murf.ai | `ap2_...` |
-| Clerk | clerk.com | `pk_test_...` (publishable) |
+| Firebase | firebase.google.com |
 
 ### Step 2 — Clerk setup
 
-1. Go to [clerk.com](https://clerk.com) → Create account → **Create Application**
-2. Name it `EduBot`, enable **Email** and **Google** sign-in
-3. Go to **API Keys** → copy the **Publishable key** (`pk_test_...`)
+1. Go to [firebase.google.com](https://firebase.google.com) → Create account → **Create Application**
+2. Name it `Emotion AI`, enable **Email** and **Google** sign-in
+3. Go to **General settings config** → copy the **API key** 
 4. Go to **Domains** → add your GitHub Pages URL:  
    `https://YOUR_USERNAME.github.io`
-5. Also add `http://localhost:3000` for local dev
 
 ### Step 3 — Deploy backend on Render
 
