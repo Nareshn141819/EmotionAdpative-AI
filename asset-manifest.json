@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/Emotion-AI/static/js/main.6068e94d.js",
+    "main.js": "/Emotion-AI/static/js/main.89c66353.js",
     "index.html": "/Emotion-AI/index.html",
-    "main.6068e94d.js.map": "/Emotion-AI/static/js/main.6068e94d.js.map"
+    "main.89c66353.js.map": "/Emotion-AI/static/js/main.89c66353.js.map"
   },
   "entrypoints": [
-    "static/js/main.6068e94d.js"
+    "static/js/main.89c66353.js"
   ]
 }
